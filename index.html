@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskWarrior</title>
+    
+    <!-- Icons & Fonts -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- MAIN CSS FILE -->
+    <link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="logo-container">
+            <i class="fas fa-dungeon logo-icon"></i>
+            <h1 class="glow-text">TaskWarrior</h1>
+        </div>
+        <p class="subtitle">Complete quests. Earn XP. Level up.</p>
+    </header>
+
+    <!-- Motivational quote randomizer -->
+    <div class="quote-container">
+        <i class="fas fa-quote-left quote-icon"></i>
+        <p id="motivational-quote" class="quote-text">"LOADING. . ."</p>
+    </div>
+
+    <main class="container">
+        
+        <!-- HERO CARD (Top Section) -->
+        <section class="hero-card">
+            <div class="hero-bg-glow"></div>
+            
+            <div class="hero-top-row">
+                <!-- User Profile (Left) -->
+                <div class="hero-user-section">
+                    <div class="level-box">
+                        <i class="fas fa-crown"></i>
+                        <span id="hero-level">1</span>
+                    </div>
+                    
+                    <div class="user-text-group">
+                        <h2 class="user-role-row">
+                            <span>Level <span id="hero-level-text">1</span> Adventurer</span>
+                            <button id="edit-name-btn" aria-label="Edit Name"><i class="fas fa-pencil-alt"></i></button>
+                        </h2>
+                        <div class="user-name-display" id="hero-name">Player One</div>
+                        <p class="xp-subtext"><span id="hero-total-xp">0</span> total XP earned</p>
+                    </div>
+                </div>
+
+                <!-- Stats Badges (Right) -->
+                <div class="hero-badges">
+                    <div class="stat-pill orange-pill">
+                        <i class="fas fa-fire"></i>
+                        <span><span id="hero-streak">0</span> day streak</span>
+                    </div>
+                    <div class="stat-pill teal-pill">
+                        <i class="fas fa-bolt"></i>
+                        <span><span id="hero-today-xp">0</span> today</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- XP Bar (Bottom) -->
+            <div class="xp-section">
+                <div class="xp-header">
+                    <span class="xp-label"><i class="fas fa-sparkles"></i> Experience</span>
+                    <span class="xp-val"><span id="xp-to-next">100</span> XP to next level</span>
+                </div>
+                <div class="progress-track">
+                    <div id="hero-xp-bar" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS GRID -->
+        <section class="stats-grid">
+            <div class="grid-card">
+                <div class="icon-circle cyan-icon"><i class="fas fa-bullseye"></i></div>
+                <h3 id="stat-quests-done">0</h3>
+                <p>Quests Done</p>
+            </div>
+            <div class="grid-card teal-icon">
+                <div class="icon-circle teal-icon"><i class="fas fa-bolt"></i></div>
+                <h3 id="stat-total-xp">0</h3>
+                <p>Total XP</p>
+            </div>
+            <div class="grid-card orange-icon">
+                <div class="icon-circle orange-icon"><i class="fas fa-calendar-day"></i></div>
+                <h3 id="stat-best-streak">0</h3>
+                <p>Best Streak</p>
+            </div>
+             <div class="grid-card yellow-icon faded">
+                <div class="icon-circle yellow-icon"><i class="fas fa-trophy"></i></div>
+                <h3>0/8</h3>
+                <p>Achievements</p>
+            </div>
+        </section>
+
+        <!-- INPUT BAR -->
+        <div class="input-bar-container">
+            <input type="text" id="quick-add-input" placeholder="Add a new quest..." autocomplete="off">
+            <button id="quick-add-btn">
+                <i class="fas fa-plus"></i> Add Quest
+            </button>
+        </div>
+
+        <!-- LIST HEADER -->
+        <div class="section-header">
+            <div class="pulse-dot"></div>
+            <h3>Active Quests (<span id="active-count">0</span>)</h3>
+        </div>
+
+        <!-- TASK LIST -->
+        <div id="task-list" class="task-list">
+            <!-- JavaScript will inject tasks here -->
+        </div>
+
+        <!-- EMPTY STATE -->
+        <div id="empty-state" class="empty-state hidden">
+            <div class="empty-icon-circle">
+                <i class="fas fa-scroll"></i>
+            </div>
+            <h3>Quest Log Empty</h3>
+            <p>The realm is peaceful... for now. Add a quest to begin.</p>
+        </div>
+
+    </main>
+
+    <!-- MODAL -->
+    <div id="task-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>New Quest</h3>
+                <button id="close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="task-form">
+                <input type="hidden" id="task-id">
+                
+                <div class="form-group">
+                    <label>Quest Title</label>
+                    <input type="text" id="task-title" required placeholder="e.g. Defeat the Bug Report" autocomplete="off">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Difficulty</label>
+                        <select id="task-difficulty">
+                            <option value="easy">Easy (+10 XP)</option>
+                            <option value="medium">Medium (+20 XP)</option>
+                            <option value="hard">Hard (+40 XP)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <input type="date" id="task-due">
+                    </div>
+                </div>
+
+                <div class="goal-option">
+                    <input type="checkbox" id="task-goal">
+                    <div class="goal-text">
+                        <label for="task-goal">Main Story Quest</label>
+                        <p>Bonus XP for early completion. Penalty for delay.</p>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="cancel-btn">Cancel</button>
+                    <button type="submit" class="save-btn">Accept Quest</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
